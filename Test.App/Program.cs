@@ -2,8 +2,7 @@
 using System.Text;
 using essentialMix.Helpers;
 
-// ReSharper disable UnusedMember.Local
-namespace TestCoreApp
+namespace Test.App
 {
 	internal class Program
 	{
