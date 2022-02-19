@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv;
 using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv.Internal;
 using CsvHelper.Configuration;

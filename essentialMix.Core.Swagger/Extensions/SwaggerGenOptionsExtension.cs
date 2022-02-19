@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using essentialMix.Helpers;
+﻿using essentialMix.Helpers;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;

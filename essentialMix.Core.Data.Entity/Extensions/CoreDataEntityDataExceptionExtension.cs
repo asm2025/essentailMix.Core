@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using essentialMix.Core.Data.Entity.Exceptions;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Drawing;
 using System.Runtime.InteropServices;

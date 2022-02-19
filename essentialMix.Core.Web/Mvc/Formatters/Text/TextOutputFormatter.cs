@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.IO;
+﻿using System.Collections;
 using System.Text;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using essentialMix.Core.Web.Mvc.Formatters.Text.Internal;

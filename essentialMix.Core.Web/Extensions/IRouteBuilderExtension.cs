@@ -1,5 +1,4 @@
-﻿using System;
-using essentialMix.Helpers;
+﻿using essentialMix.Helpers;
 using essentialMix.Web.Handlers;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
