@@ -17,6 +17,8 @@ namespace essentialMix.Core.Web.Http.ModelBinding;
 
 public class HyperModelBinder : IModelBinder
 {
+	private const string Mime_TextJson = "text/json";
+
 	private readonly IJsonSerializer _serializer;
 
 	private int _recursionCount;
@@ -63,8 +65,8 @@ public class HyperModelBinder : IModelBinder
 
 				string value = valueProviderResult.FirstValue.ToNullIfEmpty();
 
-				if (comparer.Equals(contentType, MediaTypeNames.Application.FormUrlencoded)) HandleFromData(value);
-				else if (comparer.Equals(contentType, MediaTypeNames.Application.Json) || comparer.Equals(contentType, MediaTypeNames.Text.Json)) HandleJson(value);
+				if (comparer.Equals(contentType, MediaTypeNames.Application.XWwwFormUrlencoded)) HandleFromData(value);
+				else if (comparer.Equals(contentType, MediaTypeNames.Application.Json) || comparer.Equals(contentType, Mime_TextJson)) HandleJson(value);
 				else if (comparer.Equals(contentType, MediaTypeNames.Application.Xml) || comparer.Equals(contentType, MediaTypeNames.Text.Xml)) HandleXml(value);
 			}
 
@@ -81,8 +83,8 @@ public class HyperModelBinder : IModelBinder
 
 			string body = ReadRequestBodyLocal(request)?.TrimStart('?');
 
-			if (comparer.Equals(contentType, MediaTypeNames.Application.FormUrlencoded)) HandleFromData(body);
-			else if (comparer.Equals(contentType, MediaTypeNames.Application.Json) || comparer.Equals(contentType, MediaTypeNames.Text.Json)) HandleJson(body);
+			if (comparer.Equals(contentType, MediaTypeNames.Application.XWwwFormUrlencoded)) HandleFromData(body);
+			else if (comparer.Equals(contentType, MediaTypeNames.Application.Json) || comparer.Equals(contentType, Mime_TextJson)) HandleJson(body);
 			else if (comparer.Equals(contentType, MediaTypeNames.Application.Xml) || comparer.Equals(contentType, MediaTypeNames.Text.Xml)) HandleXml(body);
 
 			// Query string
