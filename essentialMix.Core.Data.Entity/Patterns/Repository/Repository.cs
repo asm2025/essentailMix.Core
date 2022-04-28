@@ -133,7 +133,7 @@ public abstract class Repository<TContext, TEntity, TKey> : RepositoryBase<TCont
 	protected virtual async ValueTask<TEntity> DeleteAsyncInternal([NotNull] TKey key, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		TEntity entity = await DbSet.FindAsync(token, key);
+		TEntity entity = await DbSet.FindAsync(new object[] { key }, token);
 		if (entity == null) return null;
 		token.ThrowIfCancellationRequested();
 		return await DeleteAsyncInternal(entity, token);
@@ -294,7 +294,7 @@ public abstract class Repository<TContext, TEntity, TKey1, TKey2> : RepositoryBa
 	protected virtual async ValueTask<TEntity> DeleteAsyncInternal([NotNull] TKey1 key1, TKey2 key2, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		TEntity entity = await DbSet.FindAsync(token, key1, key2);
+		TEntity entity = await DbSet.FindAsync(new object[] { key1, key2 }, token);
 		if (entity == null) return null;
 		token.ThrowIfCancellationRequested();
 		return await DeleteAsyncInternal(entity, token);
@@ -455,7 +455,7 @@ public abstract class Repository<TContext, TEntity, TKey1, TKey2, TKey3> : Repos
 	protected virtual async ValueTask<TEntity> DeleteAsyncInternal([NotNull] TKey1 key1, TKey2 key2, TKey3 key3, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		TEntity entity = await DbSet.FindAsync(token, key1, key2, key3);
+		TEntity entity = await DbSet.FindAsync(new object[] { key1, key2, key3 }, token);
 		if (entity == null) return null;
 		token.ThrowIfCancellationRequested();
 		return await DeleteAsyncInternal(entity, token);
@@ -616,7 +616,13 @@ public abstract class Repository<TContext, TEntity, TKey1, TKey2, TKey3, TKey4> 
 	protected virtual async ValueTask<TEntity> DeleteAsyncInternal([NotNull] TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		TEntity entity = await DbSet.FindAsync(token, key1, key2, key3, key4);
+		TEntity entity = await DbSet.FindAsync(new object[]
+		{
+			key1,
+			key2,
+			key3,
+			key4
+		}, token);
 		if (entity == null) return null;
 		token.ThrowIfCancellationRequested();
 		return await DeleteAsyncInternal(entity, token);
@@ -777,7 +783,14 @@ public abstract class Repository<TContext, TEntity, TKey1, TKey2, TKey3, TKey4, 
 	protected virtual async ValueTask<TEntity> DeleteAsyncInternal([NotNull] TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		TEntity entity = await DbSet.FindAsync(token, key1, key2, key3, key4, key5);
+		TEntity entity = await DbSet.FindAsync(new object[]
+		{
+			key1,
+			key2,
+			key3,
+			key4,
+			key5
+		}, token);
 		if (entity == null) return null;
 		token.ThrowIfCancellationRequested();
 		return await DeleteAsyncInternal(entity, token);
