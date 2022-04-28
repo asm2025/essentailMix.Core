@@ -1,17 +1,16 @@
 ﻿using System.Collections.Concurrent;
-using essentialMix.Extensions;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using essentialMix.Json.Abstraction;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace essentialMix.Core.Web.Http.ModelBinding;
 
 public static class HyperModelBinderProvider
 {
-	public static Collections.IReadOnlySet<Type> ExcludedTypes { get; } = new HashSet<Type>
+	public static ISet<Type> ExcludedTypes { get; } = new HashSet<Type>
 	{
 		typeof(object)
-	}.AsReadOnly();
+	};
 
 	public static ConcurrentDictionary<Type, HyperModelBinder> Types { get; } = new ConcurrentDictionary<Type, HyperModelBinder>();
 }
