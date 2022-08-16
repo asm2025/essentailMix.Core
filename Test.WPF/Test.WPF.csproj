@@ -48,8 +48,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="essentialMix" Version="13.0.16" />
-		<PackageReference Include="essentialMix.Collections" Version="13.0.16" />
+		<PackageReference Include="essentialMix" Version="13.0.17" />
+		<PackageReference Include="essentialMix.Collections" Version="13.0.17" />
 		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
