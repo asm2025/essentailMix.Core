@@ -2,7 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using essentialMix.Core.WPF.Helpers;
-using essentialMix.Helpers;
+using essentialMix.Windows;
+using essentialMix.Windows.Helpers;
 using Image = System.Windows.Controls.Image;
 
 namespace essentialMix.Core.WPF.Controls;

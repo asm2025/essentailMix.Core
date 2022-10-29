@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:helpers="clr-namespace:essentialMix.Helpers;assembly=essentialMix"
+					xmlns:helpers="clr-namespace:essentialMix.Windows.Helpers;assembly=essentialMix.Windows"
 					xmlns:converters="clr-namespace:essentialMix.Core.WPF.Converters"
 					xmlns:controls="clr-namespace:essentialMix.Core.WPF.Controls">
 	<!-- Converters -->

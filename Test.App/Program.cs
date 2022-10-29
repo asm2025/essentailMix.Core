@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using essentialMix.Helpers;
+using essentialMix.Windows.Helpers;
 
 namespace Test.App
 {

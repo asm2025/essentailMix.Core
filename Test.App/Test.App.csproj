@@ -47,6 +47,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="essentialMix.Windows" Version="14.0.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
 	</ItemGroup>
 
