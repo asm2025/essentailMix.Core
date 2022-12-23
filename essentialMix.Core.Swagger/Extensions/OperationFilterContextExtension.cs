@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 // ReSharper disable once CheckNamespace

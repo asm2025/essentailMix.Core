@@ -1,4 +1,8 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using essentialMix.Helpers;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +33,7 @@ public class HttpResponseMessageResult : ResponseResultBase
 		try
 		{
 			response.StatusCode = (int)Response.StatusCode;
-				
+
 			IHttpResponseFeature responseFeature = context.HttpContext.Features.Get<IHttpResponseFeature>();
 			if (responseFeature != null) responseFeature.ReasonPhrase = Response.ReasonPhrase;
 

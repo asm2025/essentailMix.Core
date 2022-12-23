@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using essentialMix.Extensions;
 using JetBrains.Annotations;
 

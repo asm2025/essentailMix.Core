@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading;
 using System.Xml;
 using JetBrains.Annotations;
 using Microsoft.IdentityModel.Tokens;

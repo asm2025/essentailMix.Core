@@ -1,10 +1,13 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using essentialMix.Web;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using essentialMix.Web;
 
 // ReSharper disable once CheckNamespace
 namespace essentialMix.Extensions;
@@ -31,10 +34,10 @@ public static class IApplicationBuilderExtension
 			log?.LogError(exception, exception.Message);
 			context.Response.ContentType = "text/html";
 			await context.Response.WriteAsync(new ResponseStatus
-												{
-													StatusCode = (HttpStatusCode)context.Response.StatusCode,
-													Exception = exception
-												}.ToString()
+			{
+				StatusCode = (HttpStatusCode)context.Response.StatusCode,
+				Exception = exception
+			}.ToString()
 												.Replace(Environment.NewLine, $"{Environment.NewLine}<br />"));
 		};
 

@@ -1,7 +1,12 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using essentialMix.Data.Model;
 using essentialMix.Data.Patterns.Parameters;
 using essentialMix.Data.Patterns.Repository;
@@ -196,6 +201,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : RepositoryBase<T
 	}
 
 	/// <inheritdoc />
+	[NotNull]
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey key)
 	{
 		IQueryable<TEntity> query = DbSet;
@@ -415,6 +421,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2> : essentia
 	}
 
 	/// <inheritdoc />
+	[NotNull]
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2)
 	{
 		IQueryable<TEntity> query = DbSet;
@@ -645,6 +652,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3> : e
 	}
 
 	/// <inheritdoc />
+	[NotNull]
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, TKey3 key3)
 	{
 		IQueryable<TEntity> query = DbSet;
@@ -886,6 +894,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	}
 
 	/// <inheritdoc />
+	[NotNull]
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4)
 	{
 		IQueryable<TEntity> query = DbSet;
@@ -1138,6 +1147,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	}
 
 	/// <inheritdoc />
+	[NotNull]
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5)
 	{
 		IQueryable<TEntity> query = DbSet;

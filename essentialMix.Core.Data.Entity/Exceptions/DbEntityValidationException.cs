@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Linq;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
@@ -54,7 +57,7 @@ public class DbEntityValidationException : DataException
 	/// <param name="message"> The exception message. </param>
 	/// <param name="entityValidationResults"> Validation results. </param>
 	/// <param name="innerException"> The inner exception. </param>
-	public DbEntityValidationException(string message, [NotNull] IEnumerable<ValidationResult> entityValidationResults, Exception innerException) 
+	public DbEntityValidationException(string message, [NotNull] IEnumerable<ValidationResult> entityValidationResults, Exception innerException)
 		: base(message, innerException)
 	{
 		InitializeValidationResults(entityValidationResults);

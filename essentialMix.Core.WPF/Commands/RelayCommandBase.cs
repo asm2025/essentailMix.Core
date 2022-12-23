@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using essentialMix.Core.WPF.Helpers;
 
 namespace essentialMix.Core.WPF.Commands;

@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using essentialMix.Exceptions.Web;
 using essentialMix.Extensions;
 using JetBrains.Annotations;
@@ -22,7 +26,7 @@ public abstract class PushResultBase : ResponseResultBase
 	}
 
 	/// <inheritdoc />
-	protected PushResultBase(Action onCompleted, Action<Exception, ActionContext> onError) 
+	protected PushResultBase(Action onCompleted, Action<Exception, ActionContext> onError)
 	{
 		OnCompleted = onCompleted;
 		OnError = onError;

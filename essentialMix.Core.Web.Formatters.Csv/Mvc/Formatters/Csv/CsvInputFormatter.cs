@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Text;
-using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv.Internal;
-using essentialMix.Extensions;
+using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
+using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv.Internal;
+using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -34,16 +38,16 @@ public class CsvInputFormatter : TextInputFormatter, IInputFormatterExceptionPol
 	public CsvConfiguration Configuration { get; }
 
 	/// <inheritdoc />
-	public virtual InputFormatterExceptionPolicy ExceptionPolicy => GetType() == typeof (CsvInputFormatter) ? InputFormatterExceptionPolicy.MalformedInputExceptions : InputFormatterExceptionPolicy.AllExceptions;
+	public virtual InputFormatterExceptionPolicy ExceptionPolicy => GetType() == typeof(CsvInputFormatter) ? InputFormatterExceptionPolicy.MalformedInputExceptions : InputFormatterExceptionPolicy.AllExceptions;
 
 	/// <inheritdoc />
 	public override async Task<InputFormatterResult> ReadRequestBodyAsync([NotNull] InputFormatterContext context, [NotNull] Encoding encoding)
 	{
-		if (context == null) throw new ArgumentNullException(nameof (context));
-		if (encoding == null) throw new ArgumentNullException(nameof (encoding));
+		if (context == null) throw new ArgumentNullException(nameof(context));
+		if (encoding == null) throw new ArgumentNullException(nameof(encoding));
 
 		HttpRequest request = context.HttpContext.Request;
-			
+
 		if (!request.Body.CanSeek)
 		{
 			request.EnableBuffering();

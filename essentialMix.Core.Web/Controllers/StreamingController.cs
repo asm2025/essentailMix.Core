@@ -1,9 +1,12 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using essentialMix.Core.Web.Annotations;
-using essentialMix.Extensions;
 using essentialMix.Core.Web.Helpers;
 using essentialMix.Core.Web.Mvc.Filters;
+using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -96,7 +99,7 @@ public abstract class StreamingController : MvcController
 	}
 
 	protected abstract Task<IActionResult> FileUploaded([NotNull] string targetFilePath, [NotNull] FormValueProvider provider);
-		
+
 	private static Encoding GetEncoding([NotNull] MultipartSection section)
 	{
 		bool hasMediaTypeHeader = MediaTypeHeaderValue.TryParse(section.ContentType, out MediaTypeHeaderValue mediaType);

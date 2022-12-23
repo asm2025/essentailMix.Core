@@ -1,10 +1,12 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using essentialMix.Extensions;
-using Other.JonSkeet.MiscUtil.Collections;
 using JetBrains.Annotations;
 using Microsoft.IdentityModel.Tokens;
+using Other.JonSkeet.MiscUtil.Collections;
 
 namespace essentialMix.Core.Authentication.JwtBearer;
 
@@ -15,7 +17,7 @@ public sealed partial class JwtTokenBuilder
 	public const string HDR_ISSUER = "Issuer";
 
 	private const string SET_JWT_STRING = "JwtEncodedString";
-		
+
 	private const string SET_JWT_HEADER = "JwtHeader";
 	private const string SET_JWT_PAYLOAD = "JwtPayload";
 	private const string SET_JWT_SECURITY_TOKEN = "JwtSecurityToken";
@@ -26,7 +28,7 @@ public sealed partial class JwtTokenBuilder
 	private const string SET_RAW_INITIALIZATION_VECTOR = "RawInitializationVector";
 	private const string SET_RAW_CIPHER_TEXT = "RawCipherText";
 	private const string SET_RAW_AUTHENTICATION_TAG = "RawAuthenticationTag";
-		
+
 	private const string SET_SUBJECT = "Subject";
 	private const string SET_ISSUER = "Issuer";
 	private const string SET_AUDIENCE = "Audience";
@@ -208,7 +210,7 @@ partial class JwtTokenBuilder
 		if (!settings.TryGetValue(SET_JWT_HEADER, out object value)) throw new KeyNotFoundException($"Missing {SET_JWT_HEADER} parameter.");
 		JwtHeader header = (JwtHeader)value;
 		string rawHeader = null;
-			
+
 		if (settings.TryGetValue(SET_JWT_SECURITY_TOKEN, out value))
 		{
 			// go for innerToken path
@@ -226,7 +228,7 @@ partial class JwtTokenBuilder
 		}
 
 		JwtPayload payload = null;
-			
+
 		if (settings.TryGetValue(SET_JWT_PAYLOAD, out value))
 		{
 			payload = (JwtPayload)value;
@@ -310,7 +312,7 @@ partial class JwtTokenBuilder
 		*/
 		if (!settings.TryGetValue(SET_SUBJECT, out object value)) throw new KeyNotFoundException($"Missing {SET_SUBJECT} parameter.");
 		string subject = (string)value;
-			
+
 		if (!settings.TryGetValue(SET_ISSUER, out value)) throw new KeyNotFoundException($"Missing {SET_ISSUER} parameter.");
 		string issuer = (string)value;
 
@@ -325,7 +327,7 @@ partial class JwtTokenBuilder
 		if (settings.TryGetValue(SET_NOT_BEFORE, out value)) notBefore = (DateTime?)value;
 		if (settings.TryGetValue(SET_EXPIRES, out value)) expires = (DateTime?)value;
 		if (settings.TryGetValue(SET_SIGNING_CREDENTIALS, out value)) signingCredentials = (SigningCredentials)value;
-			
+
 		ISet<Claim> claimsSet = new HashSet<Claim>(ComparisonComparer.FromEqualityComparison<Claim>((a, b) => string.Equals(a?.Type, b?.Type, StringComparison.OrdinalIgnoreCase)));
 		claimsSet.Add(new Claim(JwtRegisteredClaimNames.Sub, subject));
 		claimsSet.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));

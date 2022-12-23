@@ -1,7 +1,9 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using CsvHelper.Configuration;
 using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv;
 using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv.Internal;
-using CsvHelper.Configuration;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +19,7 @@ public static class CoreWebFormattersCsvMvcOptionsExtension
 
 		CsvConfiguration settings = new CsvConfiguration(CultureInfo.InvariantCulture);
 		configureCsv(settings);
-			
+
 		CsvInputFormatter input = thisValue.InputFormatters.OfType<CsvInputFormatter>()
 											.FirstOrDefault();
 
@@ -26,10 +28,10 @@ public static class CoreWebFormattersCsvMvcOptionsExtension
 			input = new CsvInputFormatter(settings);
 			thisValue.InputFormatters.Add(input);
 		}
-			
+
 		CsvOutputFormatter output = thisValue.OutputFormatters.OfType<CsvOutputFormatter>()
 											.FirstOrDefault();
-			
+
 		if (output == null)
 		{
 			output = new CsvOutputFormatter(settings);

@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using essentialMix.Core.Web.Mvc.Formatters.Raw.Internal;
 using essentialMix.Extensions;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace essentialMix.Core.Web.Mvc.Formatters.Raw;
 
 public class RawInputFormatter : InputFormatter
 {
 	/// <inheritdoc />
-	public RawInputFormatter() 
+	public RawInputFormatter()
 	{
 		SupportedMediaTypes.Add(MediaTypeHeaderValues.TextPlain);
 		SupportedMediaTypes.Add(MediaTypeHeaderValues.OctetStream);
@@ -48,5 +52,6 @@ public class RawInputFormatter : InputFormatter
 			}
 		}
 
-		return await InputFormatterResult.FailureAsync();		}
+		return await InputFormatterResult.FailureAsync();
+	}
 }

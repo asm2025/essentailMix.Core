@@ -1,12 +1,14 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using essentialMix.Exceptions.Web;
+using essentialMix.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using essentialMix.Exceptions.Web;
-using essentialMix.Extensions;
 
 namespace essentialMix.Core.Web.Middleware;
 

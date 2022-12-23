@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,13 +30,13 @@ public static class WebBrowserExtended
 		if (sender is not WebBrowser browser) return;
 
 		string url = (args.NewValue switch
-						{
-							string s => s,
-							StringBuilder sb => sb.ToString(),
-							Uri uri => uri.ToString(),
-							UriBuilder builder => builder.Uri.ToString(),
-							_ => null
-						}).ToNullIfEmpty() ?? URL_EMPTY;
+		{
+			string s => s,
+			StringBuilder sb => sb.ToString(),
+			Uri uri => uri.ToString(),
+			UriBuilder builder => builder.Uri.ToString(),
+			_ => null
+		}).ToNullIfEmpty() ?? URL_EMPTY;
 		browser.Navigate(url);
 	}
 }

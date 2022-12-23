@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Net.Http.Headers;
 

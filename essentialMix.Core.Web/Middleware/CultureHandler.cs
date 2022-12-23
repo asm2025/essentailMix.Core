@@ -1,6 +1,11 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
+using essentialMix.Web;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using essentialMix.Web;
 using MSHeaderNames = Microsoft.Net.Http.Headers.HeaderNames;
 
 namespace essentialMix.Core.Web.Middleware;
@@ -58,7 +62,7 @@ public class CultureHandler : MiddlewareBase<CultureHandlerOptions>
 
 	[NotNull]
 	protected string ParameterName
-	{ 
+	{
 		get { return _parameterName ??= Options?.Value?.ParameterName.ToNullIfEmpty() ?? RequestParameterNames.Culture; }
 	}
 }
@@ -68,7 +72,7 @@ public static class CultureHandlerExtension
 	[NotNull]
 	public static IServiceCollection AddCultureHandler([NotNull] this IServiceCollection thisValue, Action<CultureHandlerOptions> options = null)
 	{
-		options ??= _ => {};
+		options ??= _ => { };
 		thisValue.Configure(options);
 		return thisValue;
 	}

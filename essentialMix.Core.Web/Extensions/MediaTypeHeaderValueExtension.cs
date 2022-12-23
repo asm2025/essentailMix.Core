@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.Net.Http.Headers;
 
 // ReSharper disable once CheckNamespace

@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
-using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv.Internal;
+using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
+using essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv.Internal;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
@@ -12,7 +15,7 @@ namespace essentialMix.Core.Web.Formatters.Csv.Mvc.Formatters.Csv;
 public class CsvOutputFormatter : TextOutputFormatter
 {
 	/// <inheritdoc />
-	public CsvOutputFormatter([NotNull] CsvConfiguration configuration) 
+	public CsvOutputFormatter([NotNull] CsvConfiguration configuration)
 	{
 		Configuration = configuration;
 
@@ -33,10 +36,10 @@ public class CsvOutputFormatter : TextOutputFormatter
 	[NotNull]
 	public override Task WriteResponseBodyAsync([NotNull] OutputFormatterWriteContext context, [NotNull] Encoding selectedEncoding)
 	{
-		if (context == null) throw new ArgumentNullException(nameof (context));
-		if (selectedEncoding == null) throw new ArgumentNullException(nameof (selectedEncoding));
+		if (context == null) throw new ArgumentNullException(nameof(context));
+		if (selectedEncoding == null) throw new ArgumentNullException(nameof(selectedEncoding));
 		if (context.Object == null) return Task.CompletedTask;
-			
+
 		using (TextWriter writer = context.WriterFactory(context.HttpContext.Response.Body, selectedEncoding))
 		{
 			Write(writer, context.Object);
@@ -50,7 +53,7 @@ public class CsvOutputFormatter : TextOutputFormatter
 
 		using (CsvWriter csvWriter = new CsvWriter(writer, Configuration))
 		{
-			if (value is IEnumerable enumerable) 
+			if (value is IEnumerable enumerable)
 				csvWriter.WriteRecords(enumerable);
 			else
 				csvWriter.WriteRecord(value);
@@ -63,7 +66,7 @@ public class CsvOutputFormatter : TextOutputFormatter
 
 		using (CsvWriter csvWriter = new CsvWriter(writer, Configuration))
 		{
-			if (value is IEnumerable enumerable) 
+			if (value is IEnumerable enumerable)
 				csvWriter.WriteRecords(enumerable);
 			else
 				csvWriter.WriteRecord(value);

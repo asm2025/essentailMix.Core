@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
 // ReSharper disable once CheckNamespace

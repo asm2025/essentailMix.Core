@@ -1,10 +1,12 @@
-﻿using System.Xml;
+﻿using System;
+using System.Linq;
+using System.Xml;
+using essentialMix.Core.Web.Mvc.Formatters.Raw;
+using essentialMix.Core.Web.Mvc.Formatters.Raw.Internal;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
-using essentialMix.Core.Web.Mvc.Formatters.Raw;
-using essentialMix.Core.Web.Mvc.Formatters.Raw.Internal;
 using TextInputFormatter = essentialMix.Core.Web.Mvc.Formatters.Text.TextInputFormatter;
 using TextOutputFormatter = essentialMix.Core.Web.Mvc.Formatters.Text.TextOutputFormatter;
 
@@ -35,7 +37,7 @@ public static class MvcOptionsExtension
 		thisValue.RespectBrowserAcceptHeader = true;
 		RawInputFormatter input = thisValue.InputFormatters.OfType<RawInputFormatter>()
 											.FirstOrDefault();
-			
+
 		if (input == null)
 		{
 			input = new RawInputFormatter();
@@ -53,16 +55,16 @@ public static class MvcOptionsExtension
 		thisValue.RespectBrowserAcceptHeader = true;
 		TextInputFormatter input = thisValue.InputFormatters.OfType<TextInputFormatter>()
 											.FirstOrDefault();
-			
+
 		if (input == null)
 		{
 			input = new TextInputFormatter();
 			thisValue.InputFormatters.Add(input);
 		}
-			
+
 		TextOutputFormatter output = thisValue.OutputFormatters.OfType<TextOutputFormatter>()
 											.FirstOrDefault();
-			
+
 		if (output == null)
 		{
 			output = new TextOutputFormatter();
@@ -79,16 +81,16 @@ public static class MvcOptionsExtension
 		thisValue.RespectBrowserAcceptHeader = true;
 		XmlSerializerInputFormatter input = thisValue.InputFormatters.OfType<XmlSerializerInputFormatter>()
 													.FirstOrDefault();
-			
+
 		if (input == null)
 		{
 			input = new XmlSerializerInputFormatter(thisValue);
 			thisValue.InputFormatters.Add(input);
 		}
-			
+
 		XmlSerializerOutputFormatter output = thisValue.OutputFormatters.OfType<XmlSerializerOutputFormatter>()
 														.FirstOrDefault();
-			
+
 		if (output == null)
 		{
 			output = new XmlSerializerOutputFormatter();
@@ -107,7 +109,7 @@ public static class MvcOptionsExtension
 
 		XmlDataContractSerializerInputFormatter dataContractInput = thisValue.InputFormatters.OfType<XmlDataContractSerializerInputFormatter>()
 																			.FirstOrDefault();
-			
+
 		if (dataContractInput == null)
 		{
 			dataContractInput = new XmlDataContractSerializerInputFormatter(thisValue);
@@ -116,7 +118,7 @@ public static class MvcOptionsExtension
 
 		XmlDataContractSerializerOutputFormatter dataContractOutput = thisValue.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()
 																				.FirstOrDefault();
-			
+
 		if (dataContractOutput == null)
 		{
 			dataContractOutput = new XmlDataContractSerializerOutputFormatter();

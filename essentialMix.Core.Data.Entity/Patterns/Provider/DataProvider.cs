@@ -1,4 +1,6 @@
+using System;
 using System.Data;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace essentialMix.Core.Data.Entity.Patterns.Provider;

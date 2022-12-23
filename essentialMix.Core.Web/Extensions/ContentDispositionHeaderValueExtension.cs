@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 

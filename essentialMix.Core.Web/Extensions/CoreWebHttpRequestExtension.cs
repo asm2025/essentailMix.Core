@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Net;
 using essentialMix.Helpers;
 using JetBrains.Annotations;
@@ -20,7 +22,7 @@ public static class CoreWebHttpRequestExtension
 		if (!string.IsNullOrEmpty(ipStr))
 		{
 			int n = ipStr.IndexOf(',');
-				
+
 			if (n > -1)
 			{
 				ipStr = n > 0

@@ -1,10 +1,13 @@
-﻿using System.Runtime.ExceptionServices;
+﻿using System;
+using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Text;
+using System.Threading.Tasks;
+using essentialMix.Core.Web.Mvc.Formatters.Text.Internal;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.WebUtilities;
-using essentialMix.Core.Web.Mvc.Formatters.Text.Internal;
-using JetBrains.Annotations;
 
 namespace essentialMix.Core.Web.Mvc.Formatters.Text;
 
@@ -20,13 +23,13 @@ public class TextInputFormatter : global::Microsoft.AspNetCore.Mvc.Formatters.Te
 	}
 
 	/// <inheritdoc />
-	public virtual InputFormatterExceptionPolicy ExceptionPolicy => GetType() == typeof (TextInputFormatter) ? InputFormatterExceptionPolicy.MalformedInputExceptions : InputFormatterExceptionPolicy.AllExceptions;
+	public virtual InputFormatterExceptionPolicy ExceptionPolicy => GetType() == typeof(TextInputFormatter) ? InputFormatterExceptionPolicy.MalformedInputExceptions : InputFormatterExceptionPolicy.AllExceptions;
 
 	/// <inheritdoc />
 	public override async Task<InputFormatterResult> ReadRequestBodyAsync([NotNull] InputFormatterContext context, [NotNull] Encoding encoding)
 	{
-		if (context == null) throw new ArgumentNullException(nameof (context));
-		if (encoding == null) throw new ArgumentNullException(nameof (encoding));
+		if (context == null) throw new ArgumentNullException(nameof(context));
+		if (encoding == null) throw new ArgumentNullException(nameof(encoding));
 
 		HttpRequest request = context.HttpContext.Request;
 

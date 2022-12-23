@@ -1,19 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<TargetFramework>net6.0</TargetFramework>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>10.0</LangVersion>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\sign.pfx</AssemblyOriginatorKeyFile>
 		<Platforms>AnyCPU;x64;x86</Platforms>
-		<AssemblyVersion>14.0.1.0</AssemblyVersion>
-		<FileVersion>22.12.23</FileVersion>
-		<Version>14.0.1.0</Version>
+		<AssemblyVersion>14.0.2.0</AssemblyVersion>
+		<FileVersion>22.12.24</FileVersion>
+		<Version>14.0.2.0</Version>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
@@ -53,7 +52,7 @@
 		<PackageId>$(ProjectName)</PackageId>
 		<PackageIcon>buckramega.png</PackageIcon>
 		<PackageOutputPath>$(SolutionDir)nuget</PackageOutputPath>
-		<PackageVersion>14.0.1.0</PackageVersion>
+		<PackageVersion>14.0.2.0</PackageVersion>
 		<Authors>asm</Authors>
 		<Description>Common extensions methods, helper classes, components, nano systems, and common patterns</Description>
 		<PackageTags>utilities, tools, extensions, helpers, components, patterns, core, mvc, web api</PackageTags>
@@ -76,20 +75,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="essentialMix" Version="14.0.0" />
-		<PackageReference Include="essentialMix.Cryptography" Version="14.0.0" />
-		<PackageReference Include="essentialMix.Data" Version="14.0.0" />
-		<PackageReference Include="essentialMix.Extensions.Configuration" Version="14.0.0" />
-		<PackageReference Include="essentialMix.Json.Abstraction" Version="14.0.0" />
-		<PackageReference Include="essentialMix.Logging" Version="14.0.0" />
-		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+		<PackageReference Include="essentialMix" Version="14.0.2" />
+		<PackageReference Include="essentialMix.Cryptography" Version="14.0.2" />
+		<PackageReference Include="essentialMix.Data" Version="14.0.2" />
+		<PackageReference Include="essentialMix.Extensions.Configuration" Version="14.0.2" />
+		<PackageReference Include="essentialMix.Json.Abstraction" Version="14.0.2" />
+		<PackageReference Include="essentialMix.Logging" Version="14.0.2" />
+		<PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
-
-	<PropertyGroup>
-		<PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
-if exist "$(TargetPath)" if not exist "$(TargetPath).locked" move "$(TargetPath)" "$(TargetPath).locked"
-		</PreBuildEvent>
-	</PropertyGroup>
 
 </Project>

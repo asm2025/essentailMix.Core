@@ -1,4 +1,5 @@
-﻿using essentialMix.Logging.Helpers;
+﻿using System.Threading.Tasks;
+using essentialMix.Logging.Helpers;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

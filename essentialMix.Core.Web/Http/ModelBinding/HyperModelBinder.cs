@@ -1,6 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using essentialMix.Data.Helpers;
 using essentialMix.Extensions;
@@ -35,6 +41,7 @@ public class HyperModelBinder : IModelBinder
 	protected int MaxRecursionLimit { get; }
 
 	/// <inheritdoc />
+	[NotNull]
 	public virtual Task BindModelAsync(ModelBindingContext bindingContext)
 	{
 		if (!TargetType.IsAssignableFrom(bindingContext.ModelType)) throw new TypeInitializationException(bindingContext.ModelType.FullName, null);

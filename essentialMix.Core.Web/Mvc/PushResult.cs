@@ -1,7 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using essentialMix.Extensions;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using essentialMix.Extensions;
 
 namespace essentialMix.Core.Web.Mvc;
 
@@ -34,7 +37,7 @@ public class PushResult<T> : PushResultBase
 		try
 		{
 			if (token.IsCancellationRequested) return;
-			
+
 			if (!_valueSet && _getResultTask != null)
 			{
 				_value = await _getResultTask;

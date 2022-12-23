@@ -1,4 +1,5 @@
-﻿using essentialMix.Data.Model;
+﻿using System.Linq;
+using essentialMix.Data.Model;
 using essentialMix.Data.Patterns.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;

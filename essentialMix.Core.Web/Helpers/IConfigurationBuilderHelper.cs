@@ -1,10 +1,11 @@
+using System;
 using essentialMix.Extensions;
+using essentialMix.Helpers;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
-using essentialMix.Helpers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using JetBrains.Annotations;
 
 namespace essentialMix.Core.Web.Helpers;
 

@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using essentialMix.Core.Web.Mvc.Formatters.Text.Internal;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using essentialMix.Core.Web.Mvc.Formatters.Text.Internal;
 
 namespace essentialMix.Core.Web.Mvc.Formatters.Text;
 
@@ -21,10 +24,10 @@ public class TextOutputFormatter : global::Microsoft.AspNetCore.Mvc.Formatters.T
 	[NotNull]
 	public override Task WriteResponseBodyAsync([NotNull] OutputFormatterWriteContext context, [NotNull] Encoding selectedEncoding)
 	{
-		if (context == null) throw new ArgumentNullException(nameof (context));
-		if (selectedEncoding == null) throw new ArgumentNullException(nameof (selectedEncoding));
+		if (context == null) throw new ArgumentNullException(nameof(context));
+		if (selectedEncoding == null) throw new ArgumentNullException(nameof(selectedEncoding));
 		if (context.Object == null) return Task.CompletedTask;
-			
+
 		using (TextWriter writer = context.WriterFactory(context.HttpContext.Response.Body, selectedEncoding))
 		{
 			Write(writer, context.Object);

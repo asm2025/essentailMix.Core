@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using essentialMix.Extensions;
 using essentialMix.Web;
@@ -58,6 +62,7 @@ public class FormFileFilter : IOperationFilter
 			}
 		}
 
+		[ItemNotNull]
 		static IEnumerable<ParameterDescriptor> Enumerate(ActionDescriptor descriptor)
 		{
 			foreach (ParameterDescriptor parameter in descriptor.Parameters.Where(p => p.BindingInfo?.BindingSource != null && p.BindingInfo.BindingSource.IsFromRequest && !p.BindingInfo.BindingSource.Id.IsSame("Path")))
