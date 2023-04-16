@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using essentialMix.Exceptions.Web;
 using essentialMix.Extensions;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -15,52 +16,10 @@ namespace essentialMix.Core.Web.Middleware;
 public class ExceptionHandler : MiddlewareBase<ExceptionHandlerOptions>
 {
 	/// <inheritdoc />
-	public ExceptionHandler()
-		: this(null, null, null)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(RequestDelegate next)
-		: this(next, null, null)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(IOptions<ExceptionHandlerOptions> options)
-		: this(null, options, null)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(ILogger logger)
-		: this(null, null, logger)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(RequestDelegate next, IOptions<ExceptionHandlerOptions> options)
-		: this(next, options, null)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(RequestDelegate next, ILogger logger)
-		: this(next, null, logger)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(IOptions<ExceptionHandlerOptions> options, ILogger logger)
-		: this(null, options, logger)
-	{
-	}
-
-	/// <inheritdoc />
-	public ExceptionHandler(RequestDelegate next, IOptions<ExceptionHandlerOptions> options, ILogger logger)
+	public ExceptionHandler(RequestDelegate next, [NotNull] IOptions<ExceptionHandlerOptions> options, ILogger<ExceptionHandler> logger)
 		: base(next, options, logger)
 	{
-		Options.Value.ExceptionHandler ??= Next;
+		Options.ExceptionHandler ??= Next;
 	}
 
 	/// <inheritdoc />
@@ -70,62 +29,71 @@ public class ExceptionHandler : MiddlewareBase<ExceptionHandlerOptions>
 
 		try
 		{
-			await Next.Invoke(context);
+			await Next(context);
 		}
 		catch (Exception e)
 		{
-			string errorMessage = e.CollectMessages();
-			Logger.LogError(errorMessage);
-			if (context.Response.HasStarted) throw;
-
-			PathString originalPath = context.Request.Path;
-			if (Options.Value.ExceptionHandlingPath.HasValue) context.Request.Path = Options.Value.ExceptionHandlingPath;
-
-			try
-			{
-				ExceptionHandlerFeature errorHandlerFeature = new ExceptionHandlerFeature
-				{
-					Error = e
-				};
-
-				context.Features.Set<IExceptionHandlerFeature>(errorHandlerFeature);
-				context.Response.Headers.Clear();
-
-				switch (e)
-				{
-					case HttpException httpException:
-						context.Response.StatusCode = httpException.StatusCode;
-						break;
-					case HttpListenerException httpListenerException:
-						context.Response.StatusCode = httpListenerException.ErrorCode;
-						break;
-					default:
-						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-						break;
-				}
-
-				if (Options.Value.ExceptionHandler != null)
-					await Options.Value.ExceptionHandler.Invoke(context);
-				else
-				{
-					IHttpResponseFeature responseFeature = context.Features.Get<IHttpResponseFeature>();
-					if (responseFeature != null) responseFeature.ReasonPhrase = errorMessage;
-				}
-
-				return;
-			}
-			catch (Exception ex)
-			{
-				errorMessage = ex.CollectMessages();
-				Logger.LogError(errorMessage);
-			}
-			finally
-			{
-				context.Request.Path = originalPath;
-			}
-
+			if (await OnError(context, e)) return;
 			// Re-throw the original if we couldn't handle it
 			throw;
 		}
+	}
+
+	protected virtual async Task<bool> OnError([NotNull] HttpContext context, [NotNull] Exception exception)
+	{
+		if (context.Response.HasStarted) return false;
+
+		string errorMessage = exception.CollectMessages();
+		Logger.LogError(errorMessage);
+
+		PathString originalPath = context.Request.Path;
+		if (Options.ExceptionHandlingPath.HasValue) context.Request.Path = Options.ExceptionHandlingPath;
+
+		try
+		{
+			ExceptionHandlerFeature errorHandlerFeature = new ExceptionHandlerFeature
+			{
+				Error = exception
+			};
+
+			context.Features.Set<IExceptionHandlerFeature>(errorHandlerFeature);
+			context.Response.Headers.Clear();
+
+			context.Response.StatusCode = exception switch
+			{
+				HttpException httpException => httpException.StatusCode,
+				HttpListenerException httpListenerException => httpListenerException.ErrorCode,
+				_ => (int)HttpStatusCode.InternalServerError
+			};
+
+			if (Options.ExceptionHandler != null)
+				await Options.ExceptionHandler.Invoke(context);
+			else
+			{
+				IHttpResponseFeature responseFeature = context.Features.Get<IHttpResponseFeature>();
+				if (responseFeature != null) responseFeature.ReasonPhrase = errorMessage;
+			}
+
+			return true;
+		}
+		catch (Exception ex)
+		{
+			errorMessage = ex.CollectMessages();
+			Logger.LogError(errorMessage);
+			return false;
+		}
+		finally
+		{
+			context.Request.Path = originalPath;
+		}
+	}
+}
+
+public static class ExceptionHandlerExtension
+{
+	[NotNull]
+	public static IApplicationBuilder UseExceptionHandler([NotNull] this IApplicationBuilder thisValue)
+	{
+		return thisValue.UseMiddleware<ExceptionHandler>();
 	}
 }

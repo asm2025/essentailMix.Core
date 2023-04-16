@@ -14,6 +14,7 @@ namespace essentialMix.Extensions;
 
 public static class CoreWebHttpContextExtension
 {
+	[NotNull]
 	public static Task WriteModelAsync<T>([NotNull] this HttpContext context, T model)
 	{
 		ObjectResult result = new ObjectResult(model)
@@ -24,6 +25,7 @@ public static class CoreWebHttpContextExtension
 		return context.ExecuteResultAsync(result);
 	}
 
+	[NotNull]
 	public static Task ExecuteResultAsync<TResult>([NotNull] this HttpContext context, [NotNull] TResult result)
 		where TResult : IActionResult
 	{
@@ -40,5 +42,23 @@ public static class CoreWebHttpContextExtension
 		OutputFormatterWriteContext formatterContext = new OutputFormatterWriteContext(context, writerFactory.CreateWriter, typeof(T), model);
 		IOutputFormatter selectedFormatter = selector.SelectFormatter(formatterContext, Array.Empty<IOutputFormatter>(), new MediaTypeCollection());
 		return (selectedFormatter, formatterContext);
+	}
+
+	public static void CheckSameSite(this HttpContext thisValue, [NotNull] CookieOptions options)
+	{
+		if (thisValue == null || options.SameSite != SameSiteMode.None) return;
+		string userAgent = thisValue.Request.Headers["User-Agent"].ToString();
+		if (thisValue.Request.IsHttps && !DisallowsSameSiteNone(userAgent)) return;
+		options.SameSite = SameSiteMode.Unspecified;
+	}
+
+	private static bool DisallowsSameSiteNone(string userAgent)
+	{
+		return !string.IsNullOrWhiteSpace(userAgent) &&
+				(userAgent.Contains("CPU iPhone OS 12") ||
+				userAgent.Contains("iPad; CPU OS 12") ||
+				userAgent.Contains("Macintosh; Intel Mac OS X 10_14") && userAgent.Contains("Version/") && userAgent.Contains("Safari") ||
+				userAgent.Contains("Chrome/5") ||
+				userAgent.Contains("Chrome/6"));
 	}
 }

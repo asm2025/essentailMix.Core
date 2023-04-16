@@ -28,7 +28,7 @@
 		<PlatformTarget>x86</PlatformTarget>
 	</PropertyGroup>
 	
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug'">
 		<DebugSymbols>true</DebugSymbols>
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
 		<DebugType>full</DebugType>
@@ -43,7 +43,7 @@
 		<ErrorReport>prompt</ErrorReport>
 		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<IsPackable>True</IsPackable>
 		<PackageId>$(ProjectName)</PackageId>
@@ -51,10 +51,10 @@
 		<PackageOutputPath>$(SolutionDir)nuget</PackageOutputPath>
 		<PackageVersion>14.0.7.0</PackageVersion>
 		<Authors>asm</Authors>
-		<Description>Common extensions methods, helper classes, components, nano systems, and common patterns</Description>
-		<PackageTags>utilities, tools, extensions, helpers, components, patterns, core, mvc, web api, NewtonSoft, json, serialization</PackageTags>
-		<PackageProjectUrl>https://github.com/asm2025/essentialMix.Core</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/asm2025/essentialMix.Core</RepositoryUrl>
+		<Description>Common extensions methods, helper classes, components, nano systems, common patterns, and caching</Description>
+		<PackageTags>utilities, tools, extensions, helpers, components, patterns, collections, data structure, caching</PackageTags>
+		<PackageProjectUrl>https://github.com/asm2025/essentialMix</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/asm2025/essentialMix</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
@@ -63,6 +63,7 @@
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
+
 	<ItemGroup>
 		<None Include="..\buckramega.png" Pack="True" PackagePath="" />
 	</ItemGroup>
@@ -74,7 +75,10 @@
 	<ItemGroup>
 		<PackageReference Include="essentialMix" Version="14.0.7" />
 		<PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.16" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.16" />
+		<PackageReference Include="SendGrid" Version="9.28.1" />
 	</ItemGroup>
 
 </Project>

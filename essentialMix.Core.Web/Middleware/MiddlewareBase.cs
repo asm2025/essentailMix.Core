@@ -27,11 +27,11 @@ public abstract class MiddlewareBase<TOptions> : MiddlewareBase
 	where TOptions : class, new()
 {
 	/// <inheritdoc />
-	protected MiddlewareBase(RequestDelegate next, IOptions<TOptions> options, ILogger logger)
+	protected MiddlewareBase(RequestDelegate next, [NotNull] IOptions<TOptions> options, ILogger logger)
 		: base(next, logger)
 	{
-		Options = options;
+		Options = options.Value;
 	}
 
-	protected IOptions<TOptions> Options { get; }
+	protected TOptions Options { get; }
 }

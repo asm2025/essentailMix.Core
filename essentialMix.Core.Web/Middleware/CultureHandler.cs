@@ -63,7 +63,7 @@ public class CultureHandler : MiddlewareBase<CultureHandlerOptions>
 	[NotNull]
 	protected string ParameterName
 	{
-		get { return _parameterName ??= Options?.Value?.ParameterName.ToNullIfEmpty() ?? RequestParameterNames.Culture; }
+		get { return _parameterName ??= Options?.ParameterName.ToNullIfEmpty() ?? RequestParameterNames.Culture; }
 	}
 }
 
