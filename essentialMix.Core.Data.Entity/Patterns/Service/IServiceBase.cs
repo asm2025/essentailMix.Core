@@ -34,7 +34,11 @@ public interface IServiceBase<out TContext, out TRepository, TEntity, TKey> : IS
 	IPaginated<TEntity> List([NotNull] IQueryable<TEntity> queryable, IPagination settings = null);
 	IPaginated<T> List<T>([NotNull] IQueryable<TEntity> queryable, IPagination settings = null);
 	[NotNull]
-	Task<IPaginated<TEntity>> ListAsync([NotNull] IQueryable<TEntity> queryable, IPagination settings = null, CancellationToken token = default(CancellationToken));
+	Task<IPaginated<TEntity>> ListAsync([NotNull] IQueryable<TEntity> queryable, CancellationToken token = default(CancellationToken));
 	[NotNull]
-	Task<IPaginated<T>> ListAsync<T>([NotNull] IQueryable<TEntity> queryable, IPagination settings = null, CancellationToken token = default(CancellationToken));
+	Task<IPaginated<TEntity>> ListAsync([NotNull] IQueryable<TEntity> queryable, IPagination settings, CancellationToken token = default(CancellationToken));
+	[NotNull]
+	Task<IPaginated<T>> ListAsync<T>([NotNull] IQueryable<TEntity> queryable, CancellationToken token = default(CancellationToken));
+	[NotNull]
+	Task<IPaginated<T>> ListAsync<T>([NotNull] IQueryable<TEntity> queryable, IPagination settings, CancellationToken token = default(CancellationToken));
 }

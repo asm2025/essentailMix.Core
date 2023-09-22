@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NWebsec.Core.Common.Middleware.Options;
 
 // ReSharper disable once CheckNamespace
@@ -147,6 +149,51 @@ public static class IApplicationBuilderExtension
 			AddTrustedConnectDomains(csp, configuration);
 		});
 		return thisValue;
+	}
+
+	[NotNull]
+	public static IApplicationBuilder UseMvcLocalizationServices([NotNull] this IApplicationBuilder thisValue)
+	{
+		IOptions<RequestLocalizationOptions> options = thisValue.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+		return options != null
+					? thisValue.UseRequestLocalization(options.Value)
+					: thisValue.UseRequestLocalization();
+	}
+
+	[NotNull]
+	public static IApplicationBuilder UseDefaultCookiePolicy([NotNull] this IApplicationBuilder thisValue)
+	{
+		return UseDefaultCookiePolicy(thisValue, null);
+	}
+
+	[NotNull]
+	public static IApplicationBuilder UseDefaultCookiePolicy([NotNull] this IApplicationBuilder thisValue, Action<CookiePolicyOptions> configure)
+	{
+		CookiePolicyOptions options = new CookiePolicyOptions().UseDefaultCookiePolicy();
+		configure?.Invoke(options);
+		return thisValue.UseCookiePolicy(options);
+	}
+
+	[NotNull]
+	public static IApplicationBuilder UseSecurityHeaders([NotNull] this IApplicationBuilder thisValue)
+	{
+		return thisValue.Use((ctx, next) =>
+		{
+			IHeaderDictionary headers = ctx.Response.Headers;
+			headers["X-Frame-Options"] = "DENY";
+			headers["X-XSS-Protection"] = "1; mode=block";
+			headers["X-Content-Type-Options"] = "nosniff";
+			headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
+
+			headers.Remove("X-Powered-By");
+			headers.Remove("X-Powered-By-Plesk");
+			headers.Remove("X-AspNet-Version");
+			headers.Remove("ETag");
+
+			// Some headers won't remove
+			headers.Remove("Server");
+			return next();
+		});
 	}
 
 	[Conditional("DEBUG")]

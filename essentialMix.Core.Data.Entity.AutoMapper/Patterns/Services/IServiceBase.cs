@@ -36,10 +36,20 @@ public interface IServiceBase<TContext, TRepository, TEntity, TKey> : IServiceBa
 	IMapper Mapper { get; }
 	[NotNull]
 	ILogger Logger { get; }
+	[NotNull]
 	IPaginated<TEntity> List([NotNull] IQueryable<TEntity> queryable, IPagination settings = null);
+	[NotNull]
 	IPaginated<T> List<T>([NotNull] IQueryable<TEntity> queryable, IPagination settings = null);
 	[NotNull]
-	Task<IPaginated<TEntity>> ListAsync([NotNull] IQueryable<TEntity> queryable, IPagination settings = null, CancellationToken token = default(CancellationToken));
+	[ItemNotNull]
+	Task<IPaginated<TEntity>> ListAsync([NotNull] IQueryable<TEntity> queryable, CancellationToken token = default(CancellationToken));
 	[NotNull]
-	Task<IPaginated<T>> ListAsync<T>([NotNull] IQueryable<TEntity> queryable, IPagination settings = null, CancellationToken token = default(CancellationToken));
+	[ItemNotNull]
+	Task<IPaginated<TEntity>> ListAsync([NotNull] IQueryable<TEntity> queryable, IPagination settings, CancellationToken token = default(CancellationToken));
+	[NotNull]
+	[ItemNotNull]
+	Task<IPaginated<T>> ListAsync<T>([NotNull] IQueryable<TEntity> queryable, CancellationToken token = default(CancellationToken));
+	[NotNull]
+	[ItemNotNull]
+	Task<IPaginated<T>> ListAsync<T>([NotNull] IQueryable<TEntity> queryable, IPagination settings, CancellationToken token = default(CancellationToken));
 }

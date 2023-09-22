@@ -73,63 +73,84 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : RepositoryBase<T
 	}
 
 	/// <inheritdoc />
-	protected override int CountInternal(IPagination settings = null) { return PrepareCountQuery(settings).Count(); }
+	protected override int CountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.Count();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<int> CountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<int> CountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.CountAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override long LongCountInternal(IPagination settings = null) { return PrepareCountQuery(settings).LongCount(); }
+	protected override long LongCountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.LongCount();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<long> LongCountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<long> LongCountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.LongCountAsync(token);
 	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override IQueryable<TEntity> ListInternal(IPagination settings = null) { return PrepareListQuery(settings); }
-
-	/// <inheritdoc />
-	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override IQueryable<TEntity> ListInternal(IPagination settings)
 	{
-		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
-		return PrepareListQuery(settings).Paginate(settings).ToListAsync(token).As<List<TEntity>, IList<TEntity>>(token);
+		return PrepareListQuery(settings);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey key) { return PrepareGetQuery(key).FirstOrDefault(); }
+	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
+	{
+		token.ThrowIfCancellationRequested();
+		return PrepareListQuery(settings)
+				.Paginate(settings)
+				.ToListAsync(token)
+				.As<List<TEntity>, IList<TEntity>>(token);
+	}
+
+	/// <inheritdoc />
+	protected override TEntity GetInternal(TKey key)
+	{
+		return PrepareGetQuery(key)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey key, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey key, IGetSettings settings) { return PrepareGetQuery(key, settings).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey key, IGetSettings settings)
+	{
+		return PrepareGetQuery(key, settings)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey key, IGetSettings settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key, settings).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key, settings)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
@@ -147,10 +168,16 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : RepositoryBase<T
 	}
 
 	[NotNull]
-	protected IQueryable<TEntity> PrepareCountQuery(IPagination settings) { return PrepareCountQuery(DbSet, settings); }
+	protected IQueryable<TEntity> PrepareCountQuery(IPagination settings)
+	{
+		return PrepareCountQuery(DbSet, settings);
+	}
+
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareCountQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -170,6 +197,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : RepositoryBase<T
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareListQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -213,7 +242,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : RepositoryBase<T
 		else
 			filter.Append($"\"{key}\"");
 
-		filter.Append(")");
+		filter.Append(')');
 		query = query.Where(filter.ToString());
 		return query;
 	}
@@ -222,6 +251,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : RepositoryBase<T
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey key, IGetSettings settings)
 	{
 		IQueryable<TEntity> query = PrepareGetQuery(key);
+		if (settings == null) return query;
 
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
@@ -293,63 +323,84 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2> : essentia
 	}
 
 	/// <inheritdoc />
-	protected override int CountInternal(IPagination settings = null) { return PrepareCountQuery(settings).Count(); }
+	protected override int CountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.Count();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<int> CountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<int> CountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.CountAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override long LongCountInternal(IPagination settings = null) { return PrepareCountQuery(settings).LongCount(); }
+	protected override long LongCountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.LongCount();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<long> LongCountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<long> LongCountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.LongCountAsync(token);
 	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override IQueryable<TEntity> ListInternal(IPagination settings = null) { return PrepareListQuery(settings); }
-
-	/// <inheritdoc />
-	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override IQueryable<TEntity> ListInternal(IPagination settings)
 	{
-		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
-		return PrepareListQuery(settings).Paginate(settings).ToListAsync(token).As<List<TEntity>, IList<TEntity>>(token);
+		return PrepareListQuery(settings);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2) { return PrepareGetQuery(key1, key2).FirstOrDefault(); }
+	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
+	{
+		token.ThrowIfCancellationRequested();
+		return PrepareListQuery(settings)
+				.Paginate(settings)
+				.ToListAsync(token)
+				.As<List<TEntity>, IList<TEntity>>(token);
+	}
+
+	/// <inheritdoc />
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2)
+	{
+		return PrepareGetQuery(key1, key2)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, IGetSettings settings) { return PrepareGetQuery(key1, key2, settings).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, IGetSettings settings)
+	{
+		return PrepareGetQuery(key1, key2, settings)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, IGetSettings settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, settings).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, settings)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
@@ -371,6 +422,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2> : essentia
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareCountQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -390,6 +443,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2> : essentia
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareListQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -449,6 +504,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2> : essentia
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, IGetSettings settings)
 	{
 		IQueryable<TEntity> query = PrepareGetQuery(key1, key2);
+		if (settings == null) return query;
 
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
@@ -524,63 +580,81 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3> : e
 	}
 
 	/// <inheritdoc />
-	protected override int CountInternal(IPagination settings = null) { return PrepareCountQuery(settings).Count(); }
+	protected override int CountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.Count();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<int> CountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<int> CountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.CountAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override long LongCountInternal(IPagination settings = null) { return PrepareCountQuery(settings).LongCount(); }
+	protected override long LongCountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.LongCount();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<long> LongCountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<long> LongCountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.LongCountAsync(token);
 	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override IQueryable<TEntity> ListInternal(IPagination settings = null) { return PrepareListQuery(settings); }
+	protected override IQueryable<TEntity> ListInternal(IPagination settings) { return PrepareListQuery(settings); }
 
 	/// <inheritdoc />
-	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
-		return PrepareListQuery(settings).Paginate(settings).ToListAsync(token).As<List<TEntity>, IList<TEntity>>(token);
+		return PrepareListQuery(settings)
+				.Paginate(settings)
+				.ToListAsync(token)
+				.As<List<TEntity>, IList<TEntity>>(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3) { return PrepareGetQuery(key1, key2, key3).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3)
+	{
+		return PrepareGetQuery(key1, key2, key3)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, TKey3 key3, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, key3).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, key3)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, IGetSettings settings) { return PrepareGetQuery(key1, key2, key3, settings).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, IGetSettings settings)
+	{
+		return PrepareGetQuery(key1, key2, key3, settings)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, TKey3 key3, IGetSettings settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, key3, settings).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, key3, settings)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
@@ -602,6 +676,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3> : e
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareCountQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -621,6 +697,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3> : e
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareListQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -687,6 +765,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3> : e
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, TKey3 key3, IGetSettings settings)
 	{
 		IQueryable<TEntity> query = PrepareGetQuery(key1, key2, key3);
+		if (settings == null) return query;
 
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
@@ -766,63 +845,81 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	}
 
 	/// <inheritdoc />
-	protected override int CountInternal(IPagination settings = null) { return PrepareCountQuery(settings).Count(); }
+	protected override int CountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.Count();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<int> CountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<int> CountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.CountAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override long LongCountInternal(IPagination settings = null) { return PrepareCountQuery(settings).LongCount(); }
+	protected override long LongCountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.LongCount();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<long> LongCountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<long> LongCountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.LongCountAsync(token);
 	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override IQueryable<TEntity> ListInternal(IPagination settings = null) { return PrepareListQuery(settings); }
+	protected override IQueryable<TEntity> ListInternal(IPagination settings) { return PrepareListQuery(settings); }
 
 	/// <inheritdoc />
-	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
-		return PrepareListQuery(settings).Paginate(settings).ToListAsync(token).As<List<TEntity>, IList<TEntity>>(token);
+		return PrepareListQuery(settings)
+				.Paginate(settings)
+				.ToListAsync(token)
+				.As<List<TEntity>, IList<TEntity>>(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4) { return PrepareGetQuery(key1, key2, key3, key4).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4)
+	{
+		return PrepareGetQuery(key1, key2, key3, key4)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, key3, key4).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, key3, key4)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, IGetSettings settings) { return PrepareGetQuery(key1, key2, key3, key4, settings).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, IGetSettings settings)
+	{
+		return PrepareGetQuery(key1, key2, key3, key4, settings)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, IGetSettings settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, key3, key4, settings).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, key3, key4, settings)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
@@ -844,6 +941,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareCountQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -863,6 +962,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareListQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -936,6 +1037,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, IGetSettings settings)
 	{
 		IQueryable<TEntity> query = PrepareGetQuery(key1, key2, key3, key4);
+		if (settings == null) return query;
 
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
@@ -1019,63 +1121,81 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	}
 
 	/// <inheritdoc />
-	protected override int CountInternal(IPagination settings = null) { return PrepareCountQuery(settings).Count(); }
+	protected override int CountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.Count();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<int> CountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<int> CountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.CountAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override long LongCountInternal(IPagination settings = null) { return PrepareCountQuery(settings).LongCount(); }
+	protected override long LongCountInternal(IPagination settings)
+	{
+		return PrepareCountQuery(settings)
+			.LongCount();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override Task<long> LongCountAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<long> LongCountAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
 		IQueryable<TEntity> queryable = PrepareCountQuery(settings);
 		return queryable.LongCountAsync(token);
 	}
 
 	/// <inheritdoc />
 	[NotNull]
-	protected override IQueryable<TEntity> ListInternal(IPagination settings = null) { return PrepareListQuery(settings); }
+	protected override IQueryable<TEntity> ListInternal(IPagination settings) { return PrepareListQuery(settings); }
 
 	/// <inheritdoc />
-	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings = null, CancellationToken token = default(CancellationToken))
+	protected override Task<IList<TEntity>> ListAsyncInternal(IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		settings ??= new Pagination();
-		return PrepareListQuery(settings).Paginate(settings).ToListAsync(token).As<List<TEntity>, IList<TEntity>>(token);
+		return PrepareListQuery(settings)
+				.Paginate(settings)
+				.ToListAsync(token)
+				.As<List<TEntity>, IList<TEntity>>(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5) { return PrepareGetQuery(key1, key2, key3, key4, key5).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5)
+	{
+		return PrepareGetQuery(key1, key2, key3, key4, key5)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, key3, key4, key5).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, key3, key4, key5)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
-	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, IGetSettings settings) { return PrepareGetQuery(key1, key2, key3, key4, key5, settings).FirstOrDefault(); }
+	protected override TEntity GetInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, IGetSettings settings)
+	{
+		return PrepareGetQuery(key1, key2, key3, key4, key5, settings)
+			.FirstOrDefault();
+	}
 
 	/// <inheritdoc />
 	[NotNull]
 	protected override Task<TEntity> GetAsyncInternal(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, IGetSettings settings, CancellationToken token = default(CancellationToken))
 	{
 		token.ThrowIfCancellationRequested();
-		return PrepareGetQuery(key1, key2, key3, key4, key5, settings).FirstOrDefaultAsync(token);
+		return PrepareGetQuery(key1, key2, key3, key4, key5, settings)
+			.FirstOrDefaultAsync(token);
 	}
 
 	/// <inheritdoc />
@@ -1097,6 +1217,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareCountQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -1116,6 +1238,8 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	/// <inheritdoc />
 	protected override IQueryable<TEntity> PrepareListQuery(IQueryable<TEntity> query, IPagination settings)
 	{
+		if (settings == null) return query;
+
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{
 			query = includeSettings.Include.SkipNullOrEmpty()
@@ -1196,6 +1320,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey1, TKey2, TKey3, TKe
 	protected override IQueryable<TEntity> PrepareGetQuery(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, IGetSettings settings)
 	{
 		IQueryable<TEntity> query = PrepareGetQuery(key1, key2, key3, key4, key5);
+		if (settings == null) return query;
 
 		if (settings is IIncludeSettings { Include.Count: > 0 } includeSettings)
 		{

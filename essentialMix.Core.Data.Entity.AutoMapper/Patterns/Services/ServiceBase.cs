@@ -72,7 +72,6 @@ public abstract class ServiceBase<TContext, TRepository, TEntity, TKey> : Dispos
 	[NotNull]
 	public IPaginated<T> List<T>(IPagination settings = null) { return List<T>(Repository.List(settings), settings); }
 	/// <inheritdoc />
-	[NotNull]
 	public virtual IPaginated<TEntity> List(IQueryable<TEntity> queryable, IPagination settings = null)
 	{
 		ThrowIfDisposed();
@@ -90,7 +89,6 @@ public abstract class ServiceBase<TContext, TRepository, TEntity, TKey> : Dispos
 	}
 
 	/// <inheritdoc />
-	[NotNull]
 	public virtual IPaginated<T> List<T>(IQueryable<TEntity> queryable, IPagination settings = null)
 	{
 		ThrowIfDisposed();
@@ -110,10 +108,25 @@ public abstract class ServiceBase<TContext, TRepository, TEntity, TKey> : Dispos
 
 	/// <inheritdoc />
 	[NotNull]
-	public Task<IPaginated<TEntity>> ListAsync(IPagination settings = null, CancellationToken token = default(CancellationToken)) { return ListAsync(Repository.List(settings), settings, token); }
+	public Task<IPaginated<TEntity>> ListAsync(CancellationToken token = default(CancellationToken)) { return ListAsync(Repository.List(), null, token); }
 	/// <inheritdoc />
-	[ItemNotNull]
-	public async Task<IPaginated<TEntity>> ListAsync(IQueryable<TEntity> queryable, IPagination settings = null, CancellationToken token = default(CancellationToken))
+	[NotNull]
+	public Task<IPaginated<TEntity>> ListAsync(IPagination settings, CancellationToken token = default(CancellationToken)) { return ListAsync(Repository.List(settings), settings, token); }
+
+	/// <inheritdoc />
+	[NotNull]
+	public Task<IPaginated<T>> ListAsync<T>(CancellationToken token = default(CancellationToken)) { return ListAsync<T>(Repository.List(), null, token); }
+
+	/// <inheritdoc />
+	public Task<IPaginated<TEntity>> ListAsync(IQueryable<TEntity> queryable, CancellationToken token = default(CancellationToken))
+	{
+		ThrowIfDisposed();
+		token.ThrowIfCancellationRequested();
+		return ListAsync(queryable, null, token);
+	}
+
+	/// <inheritdoc />
+	public async Task<IPaginated<TEntity>> ListAsync(IQueryable<TEntity> queryable, IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		ThrowIfDisposed();
 		token.ThrowIfCancellationRequested();
@@ -138,10 +151,18 @@ public abstract class ServiceBase<TContext, TRepository, TEntity, TKey> : Dispos
 	/// <inheritdoc />
 	[NotNull]
 	[ItemNotNull]
-	public Task<IPaginated<T>> ListAsync<T>(IPagination settings = null, CancellationToken token = default(CancellationToken)) { return ListAsync<T>(Repository.List(settings), settings, token); }
+	public Task<IPaginated<T>> ListAsync<T>(IPagination settings, CancellationToken token = default(CancellationToken)) { return ListAsync<T>(Repository.List(settings), settings, token); }
+
 	/// <inheritdoc />
-	[ItemNotNull]
-	public virtual async Task<IPaginated<T>> ListAsync<T>(IQueryable<TEntity> queryable, IPagination settings = null, CancellationToken token = default(CancellationToken))
+	public Task<IPaginated<T>> ListAsync<T>(IQueryable<TEntity> queryable, CancellationToken token = default(CancellationToken))
+	{
+		ThrowIfDisposed();
+		token.ThrowIfCancellationRequested();
+		return ListAsync<T>(queryable, null, token);
+	}
+
+	/// <inheritdoc />
+	public virtual async Task<IPaginated<T>> ListAsync<T>(IQueryable<TEntity> queryable, IPagination settings, CancellationToken token = default(CancellationToken))
 	{
 		ThrowIfDisposed();
 		token.ThrowIfCancellationRequested();

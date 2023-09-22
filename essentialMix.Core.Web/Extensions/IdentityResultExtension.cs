@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 // ReSharper disable once CheckNamespace
-namespace BSCPWGen.Extensions;
+namespace essentialMix.Extensions;
 
 public static class IdentityResultExtension
 {
