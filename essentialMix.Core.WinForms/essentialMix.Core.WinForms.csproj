@@ -7,7 +7,6 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<LangVersion>11.0</LangVersion>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\sign.pfx</AssemblyOriginatorKeyFile>
 		<Platforms>AnyCPU;x64;x86</Platforms>
